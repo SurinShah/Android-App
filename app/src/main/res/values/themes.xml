@@ -1,0 +1,13 @@
+<resources>
+    <style name="Theme.CSCI571HW4" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Splash screen config -->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_wrapper</item>
+<!--        <item name="android:windowSplashScreenAnimatedIcon">@drawable/artsy_logo_foreground</item>-->
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+
+        <!-- Status bar styling -->
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+</resources>
