@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -48,13 +50,14 @@ fun ArtistCard(
             .clickable { onClick() }
             .padding(vertical = 6.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(140.dp)
+                    .height(220.dp)
             ) {
                 if (isFallback) {
                     Image(
@@ -84,7 +87,7 @@ fun ArtistCard(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
-                            .size(32.dp)
+                            .size(43.dp)
                             .clip(CircleShape)
                             .background(cardColor)
                             .clickable { onToggleFavorite?.invoke() },
@@ -95,49 +98,53 @@ fun ArtistCard(
                                 imageVector = Icons.Filled.Star,
                                 contentDescription = "Favorite",
                                 tint = Color.Black,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(25.dp)
                             )
                         } else {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_star_outline),
                                 contentDescription = "Not Favorite",
                                 tint = Color.Black,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(25.dp)
                             )
                         }
                     }
                 }
-            }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(cardColor)
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = textColor
-                    )
-
-                    if (!birth.isNullOrBlank() || !nationality.isNullOrBlank()) {
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .fillMaxWidth()
+                        .background(cardColor.copy(alpha = 0.85f))
+                        .padding(horizontal = 12.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
                         Text(
-                            text = listOfNotNull(birth, nationality).joinToString(" • "),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = textColor.copy(alpha = 0.9f)
+                            text = title,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp
+                            ),
+                            color = textColor
                         )
-                    }
-                }
 
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = "Arrow",
-                    tint = textColor
-                )
+                        if (!birth.isNullOrBlank() || !nationality.isNullOrBlank()) {
+                            Text(
+                                text = listOfNotNull(birth, nationality).joinToString(" • "),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = textColor.copy(alpha = 0.9f)
+                            )
+                        }
+                    }
+
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Arrow",
+                        tint = textColor
+                    )
+                }
             }
         }
     }

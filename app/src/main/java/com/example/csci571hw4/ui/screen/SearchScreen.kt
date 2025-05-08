@@ -73,7 +73,7 @@ fun SearchScreen(
                     onValueChange = {
                         query = it
                         debounceJob?.cancel()
-                        if (query.length > 3) {
+                        if (query.length >= 3) {
                             debounceJob = scope.launch {
                                 delay(300)
                                 viewModel.searchArtists(query)
@@ -92,13 +92,11 @@ fun SearchScreen(
                         Icon(Icons.Default.Search, contentDescription = "Search", tint = textColor)
                     },
                     trailingIcon = {
-                        if (query.isNotEmpty()) {
-                            IconButton(onClick = {
-                                query = ""
-                                viewModel.clearResults()
-                            }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear", tint = textColor)
-                            }
+                        IconButton(onClick = {
+                            query = ""
+                            viewModel.clearResults()
+                        }) {
+                            Icon(Icons.Default.Close, contentDescription = "Clear", tint = textColor)
                         }
                     },
                     colors = TextFieldDefaults.colors(
@@ -153,7 +151,6 @@ fun SearchScreen(
                                                 "Removed from favorites"
                                             }
 
-                                            // Trigger refresh on HomeScreen
                                             navController.previousBackStackEntry
                                                 ?.savedStateHandle
                                                 ?.set("shouldRefreshFavorites", true)

@@ -41,10 +41,21 @@ fun SimilarArtistsTab(
         }
 
         artists.isEmpty() -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("No Similar Artists")
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 40.dp)
+                    .background(Color(0xFFDDE7F3), RoundedCornerShape(16.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "No Similar Artists",
+                    modifier = Modifier.padding(12.dp),
+                    color = Color.Black
+                )
             }
         }
+
 
         else -> {
             LazyColumn(modifier = Modifier.fillMaxSize()) {

@@ -133,7 +133,16 @@ fun ArtworksTab(
                 Text("Categories")
             },
             text = {
-                if (categories.isEmpty()) {
+                if (categories.isEmpty() && selectedArtworkTitle != null) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else if (categories.isEmpty()) {
                     Text("No categories available")
                 } else {
                     Row(
@@ -164,7 +173,9 @@ fun ArtworksTab(
                             val category = categories[page]
                             Card(
                                 shape = RoundedCornerShape(16.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F0F0)),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surface
+                                ),
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(horizontal = 8.dp)
@@ -208,7 +219,6 @@ fun ArtworksTab(
                             }
                         }
 
-
                         IconButton(
                             onClick = {
                                 coroutineScope.launch {
@@ -225,7 +235,7 @@ fun ArtworksTab(
                 }
             },
             shape = RoundedCornerShape(16.dp),
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         )
     }
 }

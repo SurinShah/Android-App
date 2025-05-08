@@ -26,15 +26,15 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
+import android.R.attr.duration
 import coil.compose.AsyncImage
 import com.example.csci571hw4.model.FavoriteArtist
 import com.example.csci571hw4.utils.getCurrentDate
 import com.example.csci571hw4.viewmodel.AuthViewModel
 import com.example.csci571hw4.viewmodel.FavoriteViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun FavoriteArtistItem(
@@ -113,6 +113,9 @@ fun HomeScreen(
     val primaryColor = MaterialTheme.colorScheme.primary
     val textColor = if (primaryColor.luminance() > 0.5f) Color.Black else Color.White
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow.collect { backStackEntry ->
             val shouldRefresh = backStackEntry.savedStateHandle.get<Boolean>("shouldRefreshFavorites") ?: false
@@ -152,6 +155,12 @@ fun HomeScreen(
                                     onClick = {
                                         authViewModel.logout()
                                         menuExpanded = false
+                                        coroutineScope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = "Logged out successfully",
+                                                duration = SnackbarDuration.Long
+                                            )
+                                        }
                                     }
                                 )
                                 DropdownMenuItem(
@@ -163,6 +172,11 @@ fun HomeScreen(
                                                 navController.navigate("home") {
                                                     popUpTo("home") { inclusive = true }
                                                 }
+                                                coroutineScope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        message = "Account Deleted Successfully",
+                                                        duration = SnackbarDuration.Long
+                                                    )                                                }
                                             },
                                             onError = { error -> println("Delete failed: $error") }
                                         )
@@ -177,7 +191,8 @@ fun HomeScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

@@ -57,8 +57,10 @@ fun LoginScreen(
     LaunchedEffect(loginSuccess) {
         if (loginSuccess) {
             coroutineScope.launch {
-                snackbarHostState.showSnackbar("Logged in successfully")
-            }
+                snackbarHostState.showSnackbar(
+                    message = "Logged in successfully",
+                    duration = SnackbarDuration.Long
+                )            }
             navController.navigate("home") {
                 popUpTo("login") { inclusive = true }
             }
